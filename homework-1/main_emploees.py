@@ -21,8 +21,9 @@ def main():
     data = read_csv()
     with conn:
         cursor = conn.cursor()
-        for item in data[1:]:
-            cursor.execute(f"INSERT INTO employees(first_name, last_name, title, birth_date, notes) VALUES ('{item[0]}', '{item[1]}', '{item[2]}', {item[3]},'{item[4]}')")
+        for row in data[1:]:
+            cursor.execute(f'INSERT INTO employees(first_name, last_name, title, birth_date, notes) VALUES (%s, %s, %s, %s, %s)',
+                           (row[0], row[1], row[2], row[3], row[4]))
 
 
 if __name__ == '__main__':

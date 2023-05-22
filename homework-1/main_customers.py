@@ -21,9 +21,9 @@ def main():
     data = read_csv()
     with conn:
         cursor = conn.cursor()
-        for item in data[1:]:
-            cursor.execute(f"INSERT INTO customers(customer_id, company_name, contact_name) VALUES ('{item[0]}', '{item[1]}', '{item[2]}')")
-
+        for row in data[1:]:
+            cursor.execute(f'INSERT INTO customers(customer_id, company_name, contact_name) VALUES (%s, %s, %s)',
+                           (row[0], row[1], row[2]))
 
 if __name__ == '__main__':
     main()

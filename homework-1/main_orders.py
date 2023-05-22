@@ -11,7 +11,6 @@ def read_csv():
         file_reader = csv.reader(file, delimiter=',')
         for line in file_reader:
             data.append(line)
-    #data = data.replace("'", "''")
     print(data)
     return data
 
@@ -21,9 +20,8 @@ def main():
     data = read_csv()
     with conn:
         cursor = conn.cursor()
-        for item in data[1:]:
-            cursor.execute(f"INSERT INTO orders(order_id, customer_id, employee_id, order_date, ship_city) VALUES ('{item[0]}', '{item[1]}', '{item[2]}', {item[3]},'{item[4]}')")
-
-
+        for row in data[1:]:
+            cursor.execute(f'INSERT INTO orders(order_id, customer_id, employee_id, order_date, ship_city) VALUES (%s, %s, %s, %s, %s)',
+                           (int(row[0]), row[1], int(row[2]), row[3], row[4]))
 if __name__ == '__main__':
     main()
